@@ -1,0 +1,7 @@
+{
+  "name": "purescript-bigints",
+  "version": "0.1.0",
+  "dependencies": {
+    "big-integer": "^1.5.5"
+  }
+}
