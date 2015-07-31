@@ -7,3 +7,11 @@ by [Peter Olson](https://github.com/peterolson).
 ## Module documentation
 
 - [Data.BigInt](docs/Data/BigInt.md)
+
+## Installation
+
+```
+npm install
+bower install
+gulp
+```

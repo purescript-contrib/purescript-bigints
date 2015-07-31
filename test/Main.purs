@@ -62,6 +62,9 @@ main = do
   testBinary mod mod
   testBinary div div
 
+  log "It should perform multiplications which would lead to imprecise results using Number"
+  assert $ Just (fromInt 333190782 * fromInt 1103515245) == fromString "367681107430471590"
+
   -- To check the multiplication, we need to make sure that the Int does not overflow
   quickCheck (\x y -> fromSmallInt x * fromSmallInt y == fromInt (runSmallInt x * runSmallInt y))
 
@@ -69,7 +72,7 @@ main = do
   quickCheck (\x y -> compare x y == compare (fromInt x) (fromInt y))
   quickCheck (\x y -> (fromSmallInt x == fromSmallInt y) == (runSmallInt x == runSmallInt y))
 
-  log $ "pow should perform integer exponentiation and yield 0 for negative exponents"
+  log "pow should perform integer exponentiation and yield 0 for negative exponents"
   assert $ three `pow` four == fromInt 81
   assert $ three `pow` -two == zero
   assert $ three `pow` zero == one

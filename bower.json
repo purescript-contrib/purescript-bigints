@@ -10,7 +10,10 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "output"
+    "output",
+    "test",
+    "gulpfile.js",
+    "package.json"
   ],
   "dependencies": {
     "purescript-maybe": "^0.3.2"
