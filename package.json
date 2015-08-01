@@ -1,6 +1,13 @@
 {
-  "name": "purescript-bigints",
+  "scripts": {
+    "postinstall": "pulp dep install",
+    "build": "pulp test && rimraf docs && pulp docs"
+  },
   "dependencies": {
     "big-integer": "^1.5.5"
+  },
+  "devDependencies": {
+    "pulp": "^4.0.2",
+    "rimraf": "^2.4.1"
   }
 }
