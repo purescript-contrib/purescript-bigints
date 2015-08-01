@@ -4,6 +4,11 @@ A library for calculations with arbitrary length integers.
 This is a simple wrapper around [BigInteger.js](https://github.com/peterolson/BigInteger.js)
 by [Peter Olson](https://github.com/peterolson).
 
+
+## Module documentation
+
+- [Data.BigInt](docs/Data/BigInt.md)
+
 ## Example
 
 ```purescript
@@ -21,14 +26,17 @@ fromString "15013093754529657235677197216425445781404797056873877723589353301606
 true
 ```
 
-## Module documentation
-
-- [Data.BigInt](docs/Data/BigInt.md)
-
-## Installation
-
+## Installation and usage
+You can install this package via Bower. You will also need [BigInteger.js](https://github.com/peterolson/BigInteger.js), which can be installed via `npm`:
 ```
-npm install
+bower install purescript-bigints
+npm install big-integer
+```
+For the browser, remember to bundle `BigInteger.min.js` with your code.
+
+## Development
+```
 bower install
-gulp
+npm install
 ```
+Then, use `pulp` to build, run tests and generate the documentation.
