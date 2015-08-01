@@ -1,14 +1,16 @@
 module Test.Main where
 
-import Control.Monad.Eff.Console (log)
-import Data.BigInt
-import Data.Maybe
-import Data.Maybe.Unsafe (fromJust)
 import Prelude
-import Test.Assert
-import Test.QuickCheck
-import Test.QuickCheck.Arbitrary
-import Test.QuickCheck.Gen (chooseInt)
+import Control.Monad.Eff.Console (log)
+import Data.Array (filter, range)
+import Data.BigInt
+import Data.Foldable (mconcat)
+import Data.Maybe (Maybe(..))
+import Data.Maybe.Unsafe (fromJust)
+import Test.Assert (assert)
+import Test.QuickCheck (quickCheck)
+import Test.QuickCheck.Arbitrary (Arbitrary)
+import Test.QuickCheck.Gen (Gen(..), chooseInt, arrayOf, elements)
 import qualified Data.Int as Int
 
 -- | Newtype with an Arbitrary instance that generates only small integers
@@ -19,6 +21,17 @@ instance arbitrarySmallInt :: Arbitrary SmallInt where
 
 runSmallInt :: SmallInt -> Int
 runSmallInt (SmallInt n) = n
+
+-- | Arbitrary instance for BigInt
+instance arbitraryBigInt :: Arbitrary BigInt where
+  arbitrary = do
+    n <- (fromJust <<< fromString) <$> digitString
+    op <- elements id [negate]
+    return (op n)
+    where digits :: Gen Int
+          digits = chooseInt 0 9
+          digitString :: Gen String
+          digitString = (mconcat <<< map show) <$> arrayOf digits
 
 -- | Convert SmallInt to BigInt
 fromSmallInt :: SmallInt -> BigInt
@@ -46,6 +59,7 @@ main = do
   assert $ fromString "2.1" == Nothing
   assert $ fromString "123456789" == Just (fromInt 123456789)
   assert $ fromString "1e7" == Just (fromInt 10000000)
+  quickCheck $ \a -> (fromString <<< toString) a == Just a
 
   log "Parsing strings with a different base"
   assert $ fromBase 2 "100" == Just four
@@ -62,18 +76,26 @@ main = do
   testBinary mod mod
   testBinary div div
 
+  -- To test the multiplication, we need to make sure that Int does not overflow
+  quickCheck (\x y -> fromSmallInt x * fromSmallInt y == fromInt (runSmallInt x * runSmallInt y))
+
   log "It should perform multiplications which would lead to imprecise results using Number"
   assert $ Just (fromInt 333190782 * fromInt 1103515245) == fromString "367681107430471590"
 
-  -- To check the multiplication, we need to make sure that the Int does not overflow
-  quickCheck (\x y -> fromSmallInt x * fromSmallInt y == fromInt (runSmallInt x * runSmallInt y))
-
-  log "compare and (==) should be the same before and after converting to BigInt"
+  log "compare, (==), even, odd should be the same before and after converting to BigInt"
   quickCheck (\x y -> compare x y == compare (fromInt x) (fromInt y))
   quickCheck (\x y -> (fromSmallInt x == fromSmallInt y) == (runSmallInt x == runSmallInt y))
+  quickCheck (\x -> Int.even x == even (fromInt x))
+  quickCheck (\x -> Int.odd x == odd (fromInt x))
 
   log "pow should perform integer exponentiation and yield 0 for negative exponents"
   assert $ three `pow` four == fromInt 81
   assert $ three `pow` -two == zero
   assert $ three `pow` zero == one
   assert $ zero `pow` zero == one
+
+  log "Prime numbers"
+  assert $ filter (prime <<< fromInt) (range 2 20) == [2, 3, 5, 7, 11, 13, 17, 19]
+
+  log "Absolute value"
+  quickCheck $ \x -> abs x == if x > zero then x else (-x)

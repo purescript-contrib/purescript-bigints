@@ -1,5 +1,7 @@
 ## Module Data.BigInt
 
+This module defines a `BigInt` data type for arbitrary length integers.
+
 #### `BigInt`
 
 ``` purescript
@@ -41,7 +43,7 @@ large.
 pow :: BigInt -> BigInt -> BigInt
 ```
 
-Exponentiation for BigInt. If the exponent is less than 0, `pow`
+Exponentiation for `BigInt`. If the exponent is less than 0, `pow`
 returns 0. Also, `pow zero zero == one`.
 
 #### `abs`
@@ -50,7 +52,7 @@ returns 0. Also, `pow zero zero == one`.
 abs :: BigInt -> BigInt
 ```
 
-The absolute value of a BigInt
+The absolute value.
 
 #### `even`
 
@@ -82,7 +84,7 @@ Returns `true` if the number is prime, `false` otherwise.
 fromString :: String -> Maybe BigInt
 ```
 
-Parse a string into a BigInt, assuming a decimal representation. Returns
+Parse a string into a `BigInt`, assuming a decimal representation. Returns
 `Nothing` if the parse fails.
 
 Examples:
@@ -98,8 +100,8 @@ fromString "1e100"
 fromBase :: Int -> String -> Maybe BigInt
 ```
 
-Parse a string into a BigInt, assuming a representation in the given base.
-The letters "a-z" and "A-Z" will be interpreted as the numbers `10` to
+Parse a string into a `BigInt`, assuming a representation in the given base.
+The letters "a-z" and "A-Z" will be interpreted as the digits `10` to
 `36`. Returns `Nothing` if the parse fails.
 
 ```purescript
@@ -113,6 +115,6 @@ fromBase 16 "ff" == fromString "255"
 toString :: BigInt -> String
 ```
 
-A textual representation of the BigInt.
+A decimal representation of the `BigInt` as a `String`.
 
 
