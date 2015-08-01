@@ -1,5 +1,8 @@
 # purescript-bigints
 
+[![Latest release](http://img.shields.io/bower/v/purescript-bigints.svg)](https://github.com/sharkdp/purescript-bigints/releases)
+[![Build Status](https://api.travis-ci.org/sharkdp/purescript-bigints.svg?branch=master)](https://travis-ci.org/sharkdp/purescript-bigints)
+
 A library for calculations with arbitrary length integers.
 This is a simple wrapper around [BigInteger.js](https://github.com/peterolson/BigInteger.js)
 by [Peter Olson](https://github.com/peterolson).
