@@ -8,9 +8,9 @@ import Data.Foldable (mconcat)
 import Data.Maybe (Maybe(..))
 import Data.Maybe.Unsafe (fromJust)
 import Test.Assert (assert)
-import Test.QuickCheck (quickCheck)
+import Test.QuickCheck (QC(), quickCheck)
 import Test.QuickCheck.Arbitrary (Arbitrary)
-import Test.QuickCheck.Gen (Gen(..), chooseInt, arrayOf, elements)
+import Test.QuickCheck.Gen (Gen(), chooseInt, arrayOf, elements)
 import qualified Data.Int as Int
 
 -- | Newtype with an Arbitrary instance that generates only small integers
@@ -23,11 +23,13 @@ runSmallInt :: SmallInt -> Int
 runSmallInt (SmallInt n) = n
 
 -- | Arbitrary instance for BigInt
-instance arbitraryBigInt :: Arbitrary BigInt where
+newtype TestBigInt = TestBigInt BigInt
+
+instance arbitraryBigInt :: Arbitrary TestBigInt where
   arbitrary = do
     n <- (fromJust <<< fromString) <$> digitString
     op <- elements id [negate]
-    return (op n)
+    return (TestBigInt (op n))
     where digits :: Gen Int
           digits = chooseInt 0 9
           digitString :: Gen String
@@ -38,9 +40,9 @@ fromSmallInt :: SmallInt -> BigInt
 fromSmallInt = fromInt <<< runSmallInt
 
 -- | Test if a binary relation holds before and after converting to BigInt.
-testBinary :: (BigInt -> BigInt -> BigInt)
+testBinary :: forall eff. (BigInt -> BigInt -> BigInt)
            -> (Int -> Int -> Int)
-           -> _
+           -> QC eff Unit
 testBinary f g = quickCheck (\x y -> (fromInt x) `f` (fromInt y) == fromInt (x `g` y))
 
 main = do
@@ -59,7 +61,7 @@ main = do
   assert $ fromString "2.1" == Nothing
   assert $ fromString "123456789" == Just (fromInt 123456789)
   assert $ fromString "1e7" == Just (fromInt 10000000)
-  quickCheck $ \a -> (fromString <<< toString) a == Just a
+  quickCheck $ \(TestBigInt a) -> (fromString <<< toString) a == Just a
 
   log "Parsing strings with a different base"
   assert $ fromBase 2 "100" == Just four
@@ -98,4 +100,4 @@ main = do
   assert $ filter (prime <<< fromInt) (range 2 20) == [2, 3, 5, 7, 11, 13, 17, 19]
 
   log "Absolute value"
-  quickCheck $ \x -> abs x == if x > zero then x else (-x)
+  quickCheck $ \(TestBigInt x) -> abs x == if x > zero then x else (-x)

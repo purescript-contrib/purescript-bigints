@@ -1,6 +1,5 @@
 {
   "name": "purescript-bigints",
-  "version": "0.1.0",
   "description": "Arbitrary length integers",
   "homepage": "https://github.com/sharkdp/purescript-bigints",
   "authors": [
@@ -26,6 +25,6 @@
     "purescript-integers": "^0.2.1",
     "purescript-console": "^0.1.0",
     "purescript-assert": "^0.1.1",
-    "purescript-quickcheck": "^0.7.0"
+    "purescript-quickcheck": "^0.11.0"
   }
 }

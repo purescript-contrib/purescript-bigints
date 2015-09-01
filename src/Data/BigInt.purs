@@ -82,9 +82,9 @@ foreign import biCompare :: BigInt -> BigInt -> Int
 
 instance ordBigInt :: Ord BigInt where
   compare x y = case biCompare x y of
-                  1  -> GT
-                  0  -> EQ
-                  -1 -> LT
+                  1 -> GT
+                  0 -> EQ
+                  _ -> LT
 
 -- | A decimal representation of the `BigInt` as a `String`.
 foreign import toString :: BigInt -> String
