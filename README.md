@@ -10,7 +10,7 @@ by [Peter Olson](https://github.com/peterolson).
 
 ## Module documentation
 
-- [Data.BigInt](docs/Data/BigInt.md)
+- [Published on Pursuit](http://pursuit.purescript.org/packages/purescript-bigints/)
 
 ## Example
 
