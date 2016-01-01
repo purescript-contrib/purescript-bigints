@@ -12,12 +12,12 @@ An arbitrary length integer.
 
 ##### Instances
 ``` purescript
-instance eqBigInt :: Eq BigInt
-instance ordBigInt :: Ord BigInt
-instance showBigInt :: Show BigInt
-instance semiringBigInt :: Semiring BigInt
-instance ringBigInt :: Ring BigInt
-instance moduloSemiringBigInt :: ModuloSemiring BigInt
+Eq BigInt
+Ord BigInt
+Show BigInt
+Semiring BigInt
+Ring BigInt
+ModuloSemiring BigInt
 ```
 
 #### `fromInt`
