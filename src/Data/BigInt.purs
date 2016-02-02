@@ -15,7 +15,7 @@ module Data.BigInt
 
 import Prelude
 
-import Data.Maybe
+import Data.Maybe (Maybe(..))
 
 -- | An arbitrary length integer.
 foreign import data BigInt :: *
