@@ -1,6 +1,7 @@
 {
   "name": "purescript-bigints",
   "description": "Arbitrary length integers",
+  "license": "MIT",
   "homepage": "https://github.com/sharkdp/purescript-bigints",
   "authors": [
     "David Peter <mail@david-peter.de>"
