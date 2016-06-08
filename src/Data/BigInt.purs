@@ -90,7 +90,7 @@ instance ordBigInt :: Ord BigInt where
 foreign import toString :: BigInt -> String
 
 instance showBigInt :: Show BigInt where
-  show x = "fromString \"" ++ toString x ++ "\""
+  show x = "fromString \"" <> toString x <> "\""
 
 foreign import biAdd :: BigInt -> BigInt -> BigInt
 foreign import biMul :: BigInt -> BigInt -> BigInt
@@ -109,6 +109,9 @@ instance ringBigInt :: Ring BigInt where
 foreign import biDiv :: BigInt -> BigInt -> BigInt
 foreign import biMod :: BigInt -> BigInt -> BigInt
 
-instance moduloSemiringBigInt :: ModuloSemiring BigInt where
+instance commutativeRingBigInt :: CommutativeRing BigInt
+
+instance euclideanRingBigInt :: EuclideanRing BigInt where
   div = biDiv
   mod = biMod
+  degree = degree <<< toNumber

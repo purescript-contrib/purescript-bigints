@@ -1,17 +1,20 @@
 module Test.Main where
 
 import Prelude
-import Control.Monad.Eff.Console (log)
+import Control.Monad.Eff (Eff)
+import Control.Monad.Eff.Console (CONSOLE, log)
 import Data.Array (filter, range)
-import Data.BigInt
-import Data.Foldable (mconcat)
-import Data.Maybe (Maybe(..))
-import Data.Maybe.Unsafe (fromJust)
-import Test.Assert (assert)
+import Data.BigInt (BigInt, abs, fromInt, prime, pow, odd, even, fromString,
+                    toNumber, fromBase, toString)
+import Data.Foldable (fold)
+import Data.Maybe (Maybe(..), fromMaybe)
+import Test.Assert (ASSERT, assert)
+import Control.Monad.Eff.Random (RANDOM())
+import Control.Monad.Eff.Exception (EXCEPTION())
 import Test.QuickCheck (QC(), quickCheck)
-import Test.QuickCheck.Arbitrary (Arbitrary)
+import Test.QuickCheck.Arbitrary (class Arbitrary)
 import Test.QuickCheck.Gen (Gen(), chooseInt, arrayOf, elements)
-import qualified Data.Int as Int
+import Data.Int as Int
 
 -- | Newtype with an Arbitrary instance that generates only small integers
 newtype SmallInt = SmallInt Int
@@ -27,13 +30,13 @@ newtype TestBigInt = TestBigInt BigInt
 
 instance arbitraryBigInt :: Arbitrary TestBigInt where
   arbitrary = do
-    n <- (fromJust <<< fromString) <$> digitString
+    n <- (fromMaybe zero <<< fromString) <$> digitString
     op <- elements id [negate]
-    return (TestBigInt (op n))
+    pure (TestBigInt (op n))
     where digits :: Gen Int
           digits = chooseInt 0 9
           digitString :: Gen String
-          digitString = (mconcat <<< map show) <$> arrayOf digits
+          digitString = (fold <<< map show) <$> arrayOf digits
 
 -- | Convert SmallInt to BigInt
 fromSmallInt :: SmallInt -> BigInt
@@ -45,6 +48,7 @@ testBinary :: forall eff. (BigInt -> BigInt -> BigInt)
            -> QC eff Unit
 testBinary f g = quickCheck (\x y -> (fromInt x) `f` (fromInt y) == fromInt (x `g` y))
 
+main :: forall eff. Eff (console :: CONSOLE, assert :: ASSERT, random :: RANDOM, err :: EXCEPTION | eff) Unit
 main = do
   log "Simple arithmetic operations and conversions from Int"
   let two = one + one

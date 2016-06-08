@@ -20,12 +20,12 @@
     "package.json"
   ],
   "dependencies": {
-    "purescript-maybe": "^0.3.2"
+    "purescript-maybe": "^1.0.0"
   },
   "devDependencies": {
-    "purescript-integers": "^0.2.1",
-    "purescript-console": "^0.1.0",
-    "purescript-assert": "^0.1.1",
-    "purescript-quickcheck": "^0.12.0"
+    "purescript-integers": "^1.0.0",
+    "purescript-console": "^1.0.0",
+    "purescript-assert": "^1.0.0",
+    "purescript-quickcheck": "^1.0.0"
   }
 }
