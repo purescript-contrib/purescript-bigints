@@ -7,7 +7,7 @@
     "big-integer": "^1.6.9"
   },
   "devDependencies": {
-    "pulp": "^6.2.0",
-    "rimraf": "^2.4.1"
+    "pulp": "^9.0.0",
+    "rimraf": "^2.5.2"
   }
 }
