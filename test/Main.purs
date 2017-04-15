@@ -8,6 +8,7 @@ import Data.BigInt (BigInt, abs, fromInt, prime, pow, odd, even, fromString,
                     toNumber, fromBase, toString)
 import Data.Foldable (fold)
 import Data.Maybe (Maybe(..), fromMaybe)
+import Data.NonEmpty ((:|))
 import Test.Assert (ASSERT, assert)
 import Control.Monad.Eff.Random (RANDOM())
 import Control.Monad.Eff.Exception (EXCEPTION())
@@ -31,7 +32,7 @@ newtype TestBigInt = TestBigInt BigInt
 instance arbitraryBigInt :: Arbitrary TestBigInt where
   arbitrary = do
     n <- (fromMaybe zero <<< fromString) <$> digitString
-    op <- elements id [negate]
+    op <- elements (id :| [negate])
     pure (TestBigInt (op n))
     where digits :: Gen Int
           digits = chooseInt 0 9
@@ -48,7 +49,7 @@ testBinary :: forall eff. (BigInt -> BigInt -> BigInt)
            -> QC eff Unit
 testBinary f g = quickCheck (\x y -> (fromInt x) `f` (fromInt y) == fromInt (x `g` y))
 
-main :: forall eff. Eff (console :: CONSOLE, assert :: ASSERT, random :: RANDOM, err :: EXCEPTION | eff) Unit
+main :: forall eff. Eff (console :: CONSOLE, assert :: ASSERT, random :: RANDOM, exception :: EXCEPTION | eff) Unit
 main = do
   log "Simple arithmetic operations and conversions from Int"
   let two = one + one

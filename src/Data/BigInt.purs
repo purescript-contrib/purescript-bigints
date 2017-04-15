@@ -18,7 +18,7 @@ import Prelude
 import Data.Maybe (Maybe(..))
 
 -- | An arbitrary length integer.
-foreign import data BigInt :: *
+foreign import data BigInt :: Type
 
 -- | FFI wrapper to parse a String in a given base representation into a BigInt.
 foreign import fromBase' :: forall a. (a -> Maybe a)
