@@ -5,7 +5,7 @@ import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE, log)
 import Data.Array (filter, range)
 import Data.BigInt (BigInt, abs, fromInt, prime, pow, odd, even, fromString,
-                    toNumber, fromBase, toString)
+                    toNumber, fromBase, toString, not, or, xor, and, shl, shr)
 import Data.Foldable (fold)
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.NonEmpty ((:|))
@@ -106,3 +106,13 @@ main = do
 
   log "Absolute value"
   quickCheck $ \(TestBigInt x) -> abs x == if x > zero then x else (-x)
+
+  log "Logic"
+  assert $ (not <<< not) one == one
+  assert $ or one three == three
+  assert $ xor one three == two
+  assert $ and one three == one
+
+  log "Shifting"
+  assert $ shl two one == four
+  assert $ shr two one == one

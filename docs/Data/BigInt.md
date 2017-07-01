@@ -78,6 +78,54 @@ prime :: BigInt -> Boolean
 
 Returns `true` if the number is prime, `false` otherwise.
 
+#### `not`
+
+``` purescript
+not :: BigInt -> BigInt
+```
+
+Returns a bit inverted number.
+
+#### `or`
+
+``` purescript
+or :: BigInt -> BigInt -> BigInt
+```
+
+Returns a bit or'ed number.
+
+#### `xor`
+
+``` purescript
+xor :: BigInt -> BigInt -> BigInt
+```
+
+Returns a bit xor'ed numnber.
+
+#### `and`
+
+``` purescript
+and :: BigInt -> BigInt -> BigInt
+```
+
+Returns a bit and'ed number.
+
+#### `shl`
+
+``` purescript
+shl :: BigInt -> Number -> BigInt
+```
+
+Shift the first number to the right by the second number of bits and return the result. Shifts in ones if the first number is negative.
+
+#### `shr`
+
+``` purescript
+shr :: BigInt -> Number -> BigInt
+```
+
+Shift the first number to the left by the second number of bits and return the result.
+
 #### `fromString`
 
 ``` purescript

@@ -90,3 +90,38 @@ exports.pow = function(x) {
     return x.pow(y);
   };
 };
+
+exports.not = function(x) {
+  return x.not();
+  };
+
+exports.or = function(x) {
+  return function(y) {
+    return x.or(y);
+  };
+};
+
+exports.xor = function(x) {
+  return function(y) {
+    return x.xor(y);
+  };
+};
+
+exports.and = function(x) {
+  return function(y) {
+    return x.and(y);
+  };
+};
+
+exports.shl = function(x) {
+  return function(n) {
+    return x.shiftLeft(n);
+  };
+};
+
+exports.shr = function(x) {
+  return function(n) {
+    return x.shiftRight(n);
+  };
+};
+

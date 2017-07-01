@@ -10,6 +10,12 @@ module Data.BigInt
   , odd
   , prime
   , pow
+  , not
+  , or
+  , xor
+  , and
+  , shl
+  , shr
   , toNumber
   ) where
 
@@ -49,6 +55,24 @@ foreign import odd :: BigInt -> Boolean
 
 -- | Returns `true` if the number is prime, `false` otherwise.
 foreign import prime :: BigInt -> Boolean
+
+-- | Invert the bits.
+foreign import not :: BigInt -> BigInt
+
+-- | or the bits.
+foreign import or :: BigInt -> BigInt -> BigInt
+
+-- | Exlusive or the bits.
+foreign import xor :: BigInt -> BigInt -> BigInt
+
+-- | and the bits.
+foreign import and :: BigInt -> BigInt -> BigInt
+
+-- | shift the bits left and zero fill.
+foreign import shl :: BigInt -> Number -> BigInt
+
+-- | Shift the bits right and maintain pos/neg.
+foreign import shr :: BigInt -> Number -> BigInt
 
 -- | Parse a string into a `BigInt`, assuming a decimal representation. Returns
 -- | `Nothing` if the parse fails.
