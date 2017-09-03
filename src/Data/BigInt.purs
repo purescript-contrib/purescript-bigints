@@ -21,6 +21,7 @@ module Data.BigInt
 
 import Prelude
 
+import Data.Int (floor)
 import Data.Maybe (Maybe(..))
 
 -- | An arbitrary length integer.
@@ -138,4 +139,4 @@ instance commutativeRingBigInt :: CommutativeRing BigInt
 instance euclideanRingBigInt :: EuclideanRing BigInt where
   div = biDiv
   mod = biMod
-  degree = degree <<< toNumber
+  degree = floor <<< toNumber <<< abs

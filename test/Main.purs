@@ -1,21 +1,23 @@
 module Test.Main where
 
-import Prelude hiding (not)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE, log)
+import Control.Monad.Eff.Exception (EXCEPTION)
+import Control.Monad.Eff.Random (RANDOM)
 import Data.Array (filter, range)
-import Data.BigInt (BigInt, abs, fromInt, prime, pow, odd, even, fromString,
-                    toNumber, fromBase, toString, not, or, xor, and, shl, shr)
+import Data.BigInt (BigInt, abs, fromInt, prime, pow, odd, even, fromString, toNumber, fromBase, toString, not, or, xor, and, shl, shr)
 import Data.Foldable (fold)
+import Data.Int as Int
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.NonEmpty ((:|))
+import Prelude hiding (not)
 import Test.Assert (ASSERT, assert)
-import Control.Monad.Eff.Random (RANDOM())
-import Control.Monad.Eff.Exception (EXCEPTION())
-import Test.QuickCheck (QC(), quickCheck)
+import Test.QuickCheck (QC, quickCheck)
 import Test.QuickCheck.Arbitrary (class Arbitrary)
-import Test.QuickCheck.Gen (Gen(), chooseInt, arrayOf, elements)
-import Data.Int as Int
+import Test.QuickCheck.Gen (Gen, arrayOf, chooseInt, elements, resize)
+import Test.QuickCheck.Laws.Data as Data
+import Type.Proxy (Proxy(..))
+
 
 -- | Newtype with an Arbitrary instance that generates only small integers
 newtype SmallInt = SmallInt Int
@@ -28,6 +30,12 @@ runSmallInt (SmallInt n) = n
 
 -- | Arbitrary instance for BigInt
 newtype TestBigInt = TestBigInt BigInt
+derive newtype instance eqTestBigInt :: Eq TestBigInt
+derive newtype instance ordTestBigInt :: Ord TestBigInt                        
+derive newtype instance semiringTestBigInt :: Semiring TestBigInt
+derive newtype instance ringTestBigInt :: Ring TestBigInt
+derive newtype instance commutativeRingTestBigInt :: CommutativeRing TestBigInt                        
+derive newtype instance euclideanRingTestBigInt :: EuclideanRing TestBigInt
 
 instance arbitraryBigInt :: Arbitrary TestBigInt where
   arbitrary = do
@@ -37,7 +45,7 @@ instance arbitraryBigInt :: Arbitrary TestBigInt where
     where digits :: Gen Int
           digits = chooseInt 0 9
           digitString :: Gen String
-          digitString = (fold <<< map show) <$> arrayOf digits
+          digitString = (fold <<< map show) <$> (resize 50 $ arrayOf digits)
 
 -- | Convert SmallInt to BigInt
 fromSmallInt :: SmallInt -> BigInt
@@ -116,3 +124,12 @@ main = do
   log "Shifting"
   assert $ shl two one == four
   assert $ shr two one == one
+  
+  let prxBigInt = Proxy ∷ Proxy TestBigInt
+  Data.checkEq prxBigInt
+  Data.checkOrd prxBigInt
+  Data.checkSemiring prxBigInt  
+  Data.checkRing prxBigInt
+--  Data.checkEuclideanRing prxBigInt  
+  Data.checkCommutativeRing prxBigInt
+  
