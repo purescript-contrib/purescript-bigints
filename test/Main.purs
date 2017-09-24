@@ -5,7 +5,7 @@ import Control.Monad.Eff.Console (CONSOLE, log)
 import Control.Monad.Eff.Exception (EXCEPTION)
 import Control.Monad.Eff.Random (RANDOM)
 import Data.Array (filter, range)
-import Data.BigInt (BigInt, abs, fromInt, prime, pow, odd, even, fromString, toNumber, fromBase, toString, not, or, xor, and, shl, shr)
+import Data.BigInt (BigInt, abs, fromInt, prime, pow, odd, even, fromString, toNumber, fromBase, toBase, toString, not, or, xor, and, shl, shr)
 import Data.Foldable (fold)
 import Data.Int as Int
 import Data.Maybe (Maybe(..), fromMaybe)
@@ -31,10 +31,10 @@ runSmallInt (SmallInt n) = n
 -- | Arbitrary instance for BigInt
 newtype TestBigInt = TestBigInt BigInt
 derive newtype instance eqTestBigInt :: Eq TestBigInt
-derive newtype instance ordTestBigInt :: Ord TestBigInt                        
+derive newtype instance ordTestBigInt :: Ord TestBigInt
 derive newtype instance semiringTestBigInt :: Semiring TestBigInt
 derive newtype instance ringTestBigInt :: Ring TestBigInt
-derive newtype instance commutativeRingTestBigInt :: CommutativeRing TestBigInt                        
+derive newtype instance commutativeRingTestBigInt :: CommutativeRing TestBigInt
 derive newtype instance euclideanRingTestBigInt :: EuclideanRing TestBigInt
 
 instance arbitraryBigInt :: Arbitrary TestBigInt where
@@ -80,6 +80,11 @@ main = do
   assert $ fromBase 2 "100" == Just four
   assert $ fromBase 16 "ff" == fromString "255"
 
+  log "Rendering bigints as strings with a different base"
+  assert $ toBase 2 four == "100"
+  assert $ (toBase 16 <$> fromString "255") == Just "ff"
+  assert $ toString (fromInt 12345) == "12345"
+
   log "Conversions between String, Int and BigInt should not loose precision"
   quickCheck (\n -> fromString (show n) == Just (fromInt n))
   quickCheck (\n -> Int.toNumber n == toNumber (fromInt n))
@@ -124,12 +129,11 @@ main = do
   log "Shifting"
   assert $ shl two one == four
   assert $ shr two one == one
-  
+
   let prxBigInt = Proxy ∷ Proxy TestBigInt
   Data.checkEq prxBigInt
   Data.checkOrd prxBigInt
-  Data.checkSemiring prxBigInt  
+  Data.checkSemiring prxBigInt
   Data.checkRing prxBigInt
---  Data.checkEuclideanRing prxBigInt  
+--  Data.checkEuclideanRing prxBigInt
   Data.checkCommutativeRing prxBigInt
-  

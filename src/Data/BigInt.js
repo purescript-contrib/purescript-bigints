@@ -19,8 +19,10 @@ exports["fromBase'"] = function(just) {
 
 exports.fromInt = bigInt;
 
-exports.toString = function(x) {
-  return x.toString();
+exports.toBase = function(base) {
+  return function (x) {
+    return x.toString(base);
+  };
 };
 
 exports.toNumber = function(x) {
@@ -124,4 +126,3 @@ exports.shr = function(x) {
     return x.shiftRight(n);
   };
 };
-

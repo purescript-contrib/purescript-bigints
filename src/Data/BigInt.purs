@@ -5,6 +5,7 @@ module Data.BigInt
   , fromBase
   , fromInt
   , toString
+  , toBase
   , abs
   , even
   , odd
@@ -112,7 +113,11 @@ instance ordBigInt :: Ord BigInt where
                   _ -> LT
 
 -- | A decimal representation of the `BigInt` as a `String`.
-foreign import toString :: BigInt -> String
+toString :: BigInt -> String
+toString = toBase 10
+
+-- | A base N representation of the `BigInt` as a `String`.
+foreign import toBase :: Int -> BigInt -> String
 
 instance showBigInt :: Show BigInt where
   show x = "fromString \"" <> toString x <> "\""
