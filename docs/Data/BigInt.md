@@ -5,7 +5,7 @@ This module defines a `BigInt` data type for arbitrary length integers.
 #### `BigInt`
 
 ``` purescript
-data BigInt :: *
+data BigInt :: Type
 ```
 
 An arbitrary length integer.
@@ -17,7 +17,8 @@ Ord BigInt
 Show BigInt
 Semiring BigInt
 Ring BigInt
-ModuloSemiring BigInt
+CommutativeRing BigInt
+EuclideanRing BigInt
 ```
 
 #### `fromInt`
@@ -84,7 +85,7 @@ Returns `true` if the number is prime, `false` otherwise.
 not :: BigInt -> BigInt
 ```
 
-Returns a bit inverted number.
+Invert the bits.
 
 #### `or`
 
@@ -92,7 +93,7 @@ Returns a bit inverted number.
 or :: BigInt -> BigInt -> BigInt
 ```
 
-Returns a bit or'ed number.
+or the bits.
 
 #### `xor`
 
@@ -100,7 +101,7 @@ Returns a bit or'ed number.
 xor :: BigInt -> BigInt -> BigInt
 ```
 
-Returns a bit xor'ed numnber.
+Exlusive or the bits.
 
 #### `and`
 
@@ -108,7 +109,7 @@ Returns a bit xor'ed numnber.
 and :: BigInt -> BigInt -> BigInt
 ```
 
-Returns a bit and'ed number.
+and the bits.
 
 #### `shl`
 
@@ -116,7 +117,7 @@ Returns a bit and'ed number.
 shl :: BigInt -> Number -> BigInt
 ```
 
-Shift the first number to the right by the second number of bits and return the result. Shifts in ones if the first number is negative.
+shift the bits left and zero fill.
 
 #### `shr`
 
@@ -124,7 +125,7 @@ Shift the first number to the right by the second number of bits and return the 
 shr :: BigInt -> Number -> BigInt
 ```
 
-Shift the first number to the left by the second number of bits and return the result.
+Shift the bits right and maintain pos/neg.
 
 #### `fromString`
 
@@ -164,5 +165,13 @@ toString :: BigInt -> String
 ```
 
 A decimal representation of the `BigInt` as a `String`.
+
+#### `toBase`
+
+``` purescript
+toBase :: Int -> BigInt -> String
+```
+
+A base N representation of the `BigInt` as a `String`.
 
 
