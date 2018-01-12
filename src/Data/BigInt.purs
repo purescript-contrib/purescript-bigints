@@ -4,6 +4,7 @@ module Data.BigInt
   , fromString
   , fromBase
   , fromInt
+  , fromNumber
   , toString
   , toBase
   , abs
@@ -37,6 +38,9 @@ foreign import fromBase' :: forall a. (a -> Maybe a)
 
 -- | Convert an integer to a BigInt.
 foreign import fromInt :: Int -> BigInt
+
+-- | Convert a Number to a BigInt. The fractional part is truncated.
+foreign import fromNumber :: Number -> BigInt
 
 -- | Converts a BigInt to a Number. Loses precision for numbers which are too
 -- | large.
