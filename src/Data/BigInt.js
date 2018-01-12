@@ -19,6 +19,15 @@ exports["fromBase'"] = function(just) {
 
 exports.fromInt = bigInt;
 
+function truncate(n) {
+  if (n > 0) return Math.floor(n);
+  return Math.ceil(n);
+}
+
+exports.fromNumber = function(x) {
+  return bigInt(truncate(x));
+};
+
 exports.toBase = function(base) {
   return function (x) {
     return x.toString(base);

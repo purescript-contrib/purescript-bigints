@@ -5,7 +5,8 @@ import Control.Monad.Eff.Console (CONSOLE, log)
 import Control.Monad.Eff.Exception (EXCEPTION)
 import Control.Monad.Eff.Random (RANDOM)
 import Data.Array (filter, range)
-import Data.BigInt (BigInt, abs, fromInt, prime, pow, odd, even, fromString, toNumber, fromBase, toBase, toString, not, or, xor, and, shl, shr)
+import Data.BigInt (BigInt, abs, fromInt, fromNumber, prime, pow, odd, even, fromString, toNumber,
+                    fromBase, toBase, toString, not, or, xor, and, shl, shr)
 import Data.Foldable (fold)
 import Data.Int as Int
 import Data.Maybe (Maybe(..), fromMaybe)
@@ -84,6 +85,14 @@ main = do
   assert $ toBase 2 four == "100"
   assert $ (toBase 16 <$> fromString "255") == Just "ff"
   assert $ toString (fromInt 12345) == "12345"
+
+  log "Converting from Number to BigInt"
+  assert $ fromNumber 0.0 == zero
+  assert $ fromNumber 3.4 == three
+  assert $ fromNumber (-3.9) == -three
+  assert $ fromNumber 1.0e7 == fromInt 10000000
+  assert $ Just (fromNumber 1.0e47) == fromString "1e47"
+  quickCheck (\x -> fromInt x == fromNumber (Int.toNumber x))
 
   log "Conversions between String, Int and BigInt should not loose precision"
   quickCheck (\n -> fromString (show n) == Just (fromInt n))

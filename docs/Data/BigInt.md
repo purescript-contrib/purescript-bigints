@@ -29,6 +29,14 @@ fromInt :: Int -> BigInt
 
 Convert an integer to a BigInt.
 
+#### `fromNumber`
+
+``` purescript
+fromNumber :: Number -> BigInt
+```
+
+Convert a Number to a BigInt. The fractional part is truncated.
+
 #### `toNumber`
 
 ``` purescript
