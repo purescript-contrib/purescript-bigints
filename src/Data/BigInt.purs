@@ -6,7 +6,9 @@ module Data.BigInt
   , fromInt
   , fromNumber
   , toString
+  , toNonEmptyString
   , toBase
+  , toBase'
   , abs
   , even
   , odd
@@ -24,7 +26,10 @@ module Data.BigInt
 import Prelude
 
 import Data.Int (floor)
-import Data.Maybe (Maybe(..))
+import Data.Maybe (Maybe(..), fromJust)
+import Data.String.NonEmpty (NonEmptyString)
+import Data.String.NonEmpty as NES
+import Partial.Unsafe (unsafePartial)
 
 -- | An arbitrary length integer.
 foreign import data BigInt :: Type
@@ -120,8 +125,16 @@ instance ordBigInt :: Ord BigInt where
 toString :: BigInt -> String
 toString = toBase 10
 
+-- | A decimal representation of the `BigInt` as a `NonEmptyString`.
+toNonEmptyString :: BigInt -> NonEmptyString
+toNonEmptyString = toBase' 10
+
 -- | A base N representation of the `BigInt` as a `String`.
 foreign import toBase :: Int -> BigInt -> String
+
+-- | A base N representation of the `BigInt` as a `NonEmptyString`.
+toBase' :: Int -> BigInt -> NonEmptyString
+toBase' i bi = unsafePartial fromJust $ NES.fromString $ toBase i bi
 
 instance showBigInt :: Show BigInt where
   show x = "fromString \"" <> toString x <> "\""
