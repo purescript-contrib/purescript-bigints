@@ -21,7 +21,8 @@
   ],
   "dependencies": {
     "purescript-maybe": "^3.0.0",
-    "purescript-integers": "^3.0.0"
+    "purescript-integers": "^3.0.0",
+    "purescript-strings": "^3.5.0"
   },
   "devDependencies": {
     "purescript-integers": "^3.0.0",

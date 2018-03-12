@@ -1,17 +1,20 @@
 module Test.Main where
 
+import Prelude hiding (not)
+
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE, log)
 import Control.Monad.Eff.Exception (EXCEPTION)
 import Control.Monad.Eff.Random (RANDOM)
 import Data.Array (filter, range)
-import Data.BigInt (BigInt, abs, fromInt, fromNumber, prime, pow, odd, even, fromString, toNumber,
-                    fromBase, toBase, toString, not, or, xor, and, shl, shr)
+import Data.BigInt (BigInt, abs, and, even, fromBase, fromInt, fromNumber, fromString, not, odd, or, pow, prime, shl, shr, toBase, toBase', toNonEmptyString, toNumber, toString, xor)
 import Data.Foldable (fold)
 import Data.Int as Int
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.NonEmpty ((:|))
-import Prelude hiding (not)
+import Data.String.NonEmpty (unsafeFromString)
+import Data.String.NonEmpty as NES
+import Partial.Unsafe (unsafePartial)
 import Test.Assert (ASSERT, assert)
 import Test.QuickCheck (QC, quickCheck)
 import Test.QuickCheck.Arbitrary (class Arbitrary)
@@ -85,6 +88,11 @@ main = do
   assert $ toBase 2 four == "100"
   assert $ (toBase 16 <$> fromString "255") == Just "ff"
   assert $ toString (fromInt 12345) == "12345"
+
+  assert $ toBase' 2 four == unsafePartial unsafeFromString "100"
+  assert $ (toBase' 16 <$> fromString "255") == NES.fromString "ff"
+  assert $ toNonEmptyString (fromInt 12345)
+           == unsafePartial unsafeFromString "12345"
 
   log "Converting from Number to BigInt"
   assert $ fromNumber 0.0 == zero
