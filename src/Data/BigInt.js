@@ -135,3 +135,9 @@ exports.shr = function(x) {
     return x.shiftRight(n);
   };
 };
+
+exports.digitsInBase = function(radix) {
+  return function(x) {
+    return x.toArray(radix);
+  };
+};

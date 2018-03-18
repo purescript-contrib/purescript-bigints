@@ -4,7 +4,7 @@
     "build": "pulp test && rimraf docs && pulp docs"
   },
   "dependencies": {
-    "big-integer": "^1.6.24"
+    "big-integer": "^1.6.27"
   },
   "devDependencies": {
     "pulp": "^9.0.0",
