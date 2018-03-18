@@ -7,7 +7,8 @@ import Control.Monad.Eff.Console (CONSOLE, log)
 import Control.Monad.Eff.Exception (EXCEPTION)
 import Control.Monad.Eff.Random (RANDOM)
 import Data.Array (filter, range)
-import Data.BigInt (BigInt, abs, and, even, fromBase, fromInt, fromNumber, fromString, not, odd, or, pow, prime, shl, shr, toBase, toBase', toNonEmptyString, toNumber, toString, xor)
+import Data.Array.NonEmpty as NEA
+import Data.BigInt (BigInt, abs, and, digitsInBase, even, fromBase, fromInt, fromNumber, fromString, not, odd, or, pow, prime, shl, shr, toBase, toBase', toNonEmptyString, toNumber, toString, xor)
 import Data.Foldable (fold)
 import Data.Int as Int
 import Data.Maybe (Maybe(..), fromMaybe)
@@ -88,6 +89,13 @@ main = do
   assert $ toBase 2 four == "100"
   assert $ (toBase 16 <$> fromString "255") == Just "ff"
   assert $ toString (fromInt 12345) == "12345"
+
+  log "Converting bigints to arrays with a different base"
+  assert $ NEA.toArray (digitsInBase 2 four).value == [1, 0, 0]
+  assert $ (NEA.toArray <<< _.value <<< digitsInBase 16 <$>
+           fromString "255") == Just [15, 15]
+  assert $ NEA.toArray (digitsInBase 10 $ fromInt 12345).value
+           == [1, 2, 3, 4, 5]
 
   assert $ toBase' 2 four == unsafePartial unsafeFromString "100"
   assert $ (toBase' 16 <$> fromString "255") == NES.fromString "ff"

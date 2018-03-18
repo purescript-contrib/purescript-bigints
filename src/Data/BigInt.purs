@@ -1,6 +1,7 @@
 -- | This module defines a `BigInt` data type for arbitrary length integers.
 module Data.BigInt
   ( BigInt(..)
+  , BaseDigits
   , fromString
   , fromBase
   , fromInt
@@ -9,6 +10,7 @@ module Data.BigInt
   , toNonEmptyString
   , toBase
   , toBase'
+  , digitsInBase
   , abs
   , even
   , odd
@@ -25,6 +27,7 @@ module Data.BigInt
 
 import Prelude
 
+import Data.Array.NonEmpty (NonEmptyArray)
 import Data.Int (floor)
 import Data.Maybe (Maybe(..), fromJust)
 import Data.String.NonEmpty (NonEmptyString)
@@ -33,6 +36,11 @@ import Partial.Unsafe (unsafePartial)
 
 -- | An arbitrary length integer.
 foreign import data BigInt :: Type
+
+type BaseDigits = {
+    value :: NonEmptyArray Int
+  , isNegative :: Boolean
+}
 
 -- | FFI wrapper to parse a String in a given base representation into a BigInt.
 foreign import fromBase' :: forall a. (a -> Maybe a)
@@ -128,6 +136,9 @@ toString = toBase 10
 -- | A decimal representation of the `BigInt` as a `NonEmptyString`.
 toNonEmptyString :: BigInt -> NonEmptyString
 toNonEmptyString = toBase' 10
+
+-- | A base N representation of the `BigInt` as an array of digits.
+foreign import digitsInBase :: Int -> BigInt -> BaseDigits
 
 -- | A base N representation of the `BigInt` as a `String`.
 foreign import toBase :: Int -> BigInt -> String
