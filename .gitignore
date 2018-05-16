@@ -3,3 +3,4 @@ bower_components
 output
 .psci*
 .pulp-cache
+.psc-ide-port
