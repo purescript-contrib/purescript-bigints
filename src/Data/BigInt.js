@@ -2,31 +2,28 @@
 
 var bigInt = require("big-integer");
 
-exports["fromBase'"] = function(just) {
-  return function(nothing) {
+exports["fromBase'"] = function(right) {
+  return function(left) {
     return function(b) {
       return function(s) {
         try {
           var x = bigInt(s, b);
-          return just(x);
+          return right(x);
         } catch (err) {
-          return nothing;
+          return left(err instanceof Error ? err : new Error(err));
         }
       };
     };
   };
 };
 
-exports.fromInt = bigInt;
-
-function truncate(n) {
-  if (n > 0) return Math.floor(n);
-  return Math.ceil(n);
+exports.intToString = function(n) {
+  return String(n);
 }
 
-exports.fromNumber = function(x) {
-  return bigInt(truncate(x));
-};
+exports.numberToString = function(n) {
+  return String(n > 0 ? Math.floor(n) : Math.ceil(n));
+}
 
 exports.toBase = function(base) {
   return function (x) {
