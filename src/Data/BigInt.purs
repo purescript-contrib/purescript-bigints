@@ -51,8 +51,7 @@ foreign import fromBase'
   -> String
   -> Maybe BigInt
 
--- | Truncate a Number to an Int (towards zero).
--- | `Infinity`, `-Infinity`, and `NaN` pass through.
+-- | Truncate a Number to a String (towards zero).
 foreign import numberToString :: Number -> String
 
 -- | Convert an Int to a String
