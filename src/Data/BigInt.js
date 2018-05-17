@@ -23,7 +23,7 @@ exports.intToString = function(n) {
 
 function truncate(n) {
   if (n > 0) return Math.floor(n);
-  else return Math.ceil(n);
+  return Math.ceil(n);
 }
 
 exports.numberToString = function(n) {
