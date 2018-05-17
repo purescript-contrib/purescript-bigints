@@ -30,11 +30,11 @@ type BaseDigits = { value :: NonEmptyArray Int, isNegative :: Boolean }
 #### `fromString`
 
 ``` purescript
-fromString :: String -> Either Error BigInt
+fromString :: String -> Maybe BigInt
 ```
 
 Parse a string into a `BigInt`, assuming a decimal representation. Returns
-`Left Error` if the parse fails.
+`Nothing` if the parse fails.
 
 Examples:
 ```purescript
@@ -46,12 +46,12 @@ fromString "1e100"
 #### `fromBase`
 
 ``` purescript
-fromBase :: Int -> String -> Either Error BigInt
+fromBase :: Int -> String -> Maybe BigInt
 ```
 
 Parse a string into a `BigInt`, assuming a representation in the given base.
 The letters "a-z" and "A-Z" will be interpreted as the digits `10` to
-`36`. Returns `Left Error` if the parse fails.
+`36`. Returns `Nothing` if the parse fails.
 
 ```purescript
 fromBase 2 "100" == fromString "4"
@@ -61,7 +61,7 @@ fromBase 16 "ff" == fromString "255"
 #### `fromInt`
 
 ``` purescript
-fromInt :: Int -> Either Error BigInt
+fromInt :: Int -> BigInt
 ```
 
 Convert an integer to a BigInt.
@@ -69,7 +69,7 @@ Convert an integer to a BigInt.
 #### `fromNumber`
 
 ``` purescript
-fromNumber :: Number -> Either Error BigInt
+fromNumber :: Number -> Maybe BigInt
 ```
 
 Convert a Number to a BigInt. The fractional part is truncated.
