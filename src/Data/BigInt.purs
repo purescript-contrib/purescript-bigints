@@ -27,11 +27,9 @@ module Data.BigInt
 
 import Prelude
 
-import Control.Monad.Eff.Exception (Error)
 import Data.Array.NonEmpty (NonEmptyArray)
-import Data.Either (Either(..), fromRight)
 import Data.Int (floor)
-import Data.Maybe (fromJust)
+import Data.Maybe (Maybe(..), fromJust)
 import Data.String.NonEmpty (NonEmptyString)
 import Data.String.NonEmpty as NES
 import Partial.Unsafe (unsafePartial)
@@ -47,11 +45,11 @@ type BaseDigits =
 -- | FFI wrapper to parse a String in a given base representation into a BigInt.
 foreign import fromBase'
   :: forall a
-   . (a -> Either Error a)
-  -> (Error -> Either Error a)
+   . (a -> Maybe a)
+  -> Maybe a
   -> Int
   -> String
-  -> Either Error BigInt
+  -> Maybe BigInt
 
 -- | Truncate a Number to an Int (towards zero).
 -- | `Infinity`, `-Infinity`, and `NaN` pass through.
@@ -61,12 +59,15 @@ foreign import numberToString :: Number -> String
 foreign import intToString :: Int -> String
 
 -- | Convert an integer to a BigInt.
-fromInt :: Int -> Either Error BigInt
-fromInt = fromBase' Right Left 10 <<< intToString
+fromInt :: Int -> BigInt
+fromInt a = unsafePartial
+              $ fromJust
+              $ fromBase' Just Nothing 10
+              $ intToString a
 
 -- | Convert a Number to a BigInt. The fractional part is truncated.
-fromNumber :: Number -> Either Error BigInt
-fromNumber = fromBase' Right Left 10 <<< numberToString
+fromNumber :: Number -> Maybe BigInt
+fromNumber = fromBase' Just Nothing 10 <<< numberToString
 
 -- | Converts a BigInt to a Number. Loses precision for numbers which are too
 -- | large.
@@ -107,7 +108,7 @@ foreign import shl :: BigInt -> Number -> BigInt
 foreign import shr :: BigInt -> Number -> BigInt
 
 -- | Parse a string into a `BigInt`, assuming a decimal representation. Returns
--- | `Left Error` if the parse fails.
+-- | `Nothing` if the parse fails.
 -- |
 -- | Examples:
 -- | ```purescript
@@ -115,19 +116,19 @@ foreign import shr :: BigInt -> Number -> BigInt
 -- | fromString "857981209301293808359384092830482"
 -- | fromString "1e100"
 -- | ```
-fromString :: String -> Either Error BigInt
+fromString :: String -> Maybe BigInt
 fromString = fromBase 10
 
 -- | Parse a string into a `BigInt`, assuming a representation in the given base.
 -- | The letters "a-z" and "A-Z" will be interpreted as the digits `10` to
--- | `36`. Returns `Left Error` if the parse fails.
+-- | `36`. Returns `Nothing` if the parse fails.
 -- |
 -- | ```purescript
 -- | fromBase 2 "100" == fromString "4"
 -- | fromBase 16 "ff" == fromString "255"
 -- | ```
-fromBase :: Int -> String -> Either Error BigInt
-fromBase = fromBase' Right Left
+fromBase :: Int -> String -> Maybe BigInt
+fromBase = fromBase' Just Nothing
 
 foreign import biEquals :: BigInt -> BigInt -> Boolean
 
@@ -168,9 +169,9 @@ foreign import biMul :: BigInt -> BigInt -> BigInt
 
 instance semiringBigInt :: Semiring BigInt where
   add  = biAdd
-  zero = unsafePartial (fromRight (fromInt 0))
+  zero = fromInt 0
   mul  = biMul
-  one  = unsafePartial (fromRight (fromInt 1))
+  one  = fromInt 1
 
 foreign import biSub :: BigInt -> BigInt -> BigInt
 
