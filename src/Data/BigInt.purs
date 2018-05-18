@@ -51,22 +51,20 @@ foreign import fromBase'
   -> String
   -> Maybe BigInt
 
--- | Truncate a Number to a String (towards zero).
-foreign import numberToString :: Number -> String
-
--- | Convert an Int to a String
-foreign import intToString :: Int -> String
-
 -- | Convert an integer to a BigInt.
-fromInt :: Int -> BigInt
-fromInt a = unsafePartial
-              $ fromJust
-              $ fromBase' Just Nothing 10
-              $ intToString a
+foreign import fromInt :: Int -> BigInt
+
+-- | FFI wrapper to parse a Number into a BigInt.
+foreign import fromNumber'
+  :: forall a
+   . (a -> Maybe a)
+  -> Maybe a
+  -> Number
+  -> Maybe BigInt
 
 -- | Convert a Number to a BigInt. The fractional part is truncated.
 fromNumber :: Number -> Maybe BigInt
-fromNumber = fromBase' Just Nothing 10 <<< numberToString
+fromNumber = fromNumber' Just Nothing
 
 -- | Converts a BigInt to a Number. Loses precision for numbers which are too
 -- | large.
