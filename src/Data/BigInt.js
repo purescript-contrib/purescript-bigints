@@ -17,17 +17,26 @@ exports["fromBase'"] = function(just) {
   };
 };
 
-exports.intToString = function(n) {
-  return String(n);
-};
-
 function truncate(n) {
   if (n > 0) return Math.floor(n);
   return Math.ceil(n);
 }
 
-exports.numberToString = function(n) {
-  return String(truncate(n));
+exports["fromNumber'"] = function(just) {
+  return function(nothing) {
+      return function(n) {
+        try {
+          var x = bigInt(truncate(n));
+          return just(x);
+        } catch (err) {
+          return nothing;
+        }
+      };
+  };
+};
+
+exports.fromInt = function(n) {
+  return bigInt(n);
 };
 
 exports.toBase = function(base) {
