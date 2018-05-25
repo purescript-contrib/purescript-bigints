@@ -2,10 +2,6 @@ module Test.Main where
 
 import Prelude hiding (not)
 
-import Control.Monad.Eff (Eff)
-import Control.Monad.Eff.Console (CONSOLE, log)
-import Control.Monad.Eff.Exception (EXCEPTION)
-import Control.Monad.Eff.Random (RANDOM)
 import Data.Array (filter, range)
 import Data.Array.NonEmpty as NEA
 import Data.BigInt (BigInt, abs, and, digitsInBase, even, fromBase, fromInt, fromNumber, fromString, not, odd, or, pow, prime, shl, shr, toBase, toBase', toNonEmptyString, toNumber, toString, xor)
@@ -15,10 +11,12 @@ import Data.Maybe (Maybe(..), fromMaybe)
 import Data.NonEmpty ((:|))
 import Data.String.NonEmpty (unsafeFromString)
 import Data.String.NonEmpty as NES
+import Effect (Effect)
+import Effect.Console (log)
 import Global (infinity, nan)
 import Partial.Unsafe (unsafePartial)
-import Test.Assert (ASSERT, assert)
-import Test.QuickCheck (QC, quickCheck)
+import Test.Assert (assert)
+import Test.QuickCheck (quickCheck)
 import Test.QuickCheck.Arbitrary (class Arbitrary)
 import Test.QuickCheck.Gen (Gen, arrayOf, chooseInt, elements, resize)
 import Test.QuickCheck.Laws.Data as Data
@@ -45,7 +43,7 @@ derive newtype instance euclideanRingTestBigInt :: EuclideanRing TestBigInt
 instance arbitraryBigInt :: Arbitrary TestBigInt where
   arbitrary = do
     n <- (fromMaybe zero <<< fromString) <$> digitString
-    op <- elements (id :| [negate])
+    op <- elements (identity :| [negate])
     pure (TestBigInt (op n))
     where digits :: Gen Int
           digits = chooseInt 0 9
@@ -57,12 +55,12 @@ fromSmallInt :: SmallInt -> BigInt
 fromSmallInt = fromInt <<< runSmallInt
 
 -- | Test if a binary relation holds before and after converting to BigInt.
-testBinary :: forall eff. (BigInt -> BigInt -> BigInt)
+testBinary :: (BigInt -> BigInt -> BigInt)
            -> (Int -> Int -> Int)
-           -> QC eff Unit
+           -> Effect Unit
 testBinary f g = quickCheck (\x y -> (fromInt x) `f` (fromInt y) == fromInt (x `g` y))
 
-main :: forall eff. Eff (console :: CONSOLE, assert :: ASSERT, random :: RANDOM, exception :: EXCEPTION | eff) Unit
+main :: Effect Unit
 main = do
   log "Simple arithmetic operations and conversions from Int"
   let two = one + one
