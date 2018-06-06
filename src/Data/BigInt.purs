@@ -22,6 +22,8 @@ module Data.BigInt
   , and
   , shl
   , shr
+  , quot
+  , rem
   , toNumber
   ) where
 
@@ -187,3 +189,11 @@ instance euclideanRingBigInt :: EuclideanRing BigInt where
     where yy = abs y
 
   degree = floor <<< toNumber <<< abs
+
+-- | Truncating integer division
+quot :: BigInt -> BigInt -> BigInt
+quot = biDiv
+
+-- | The remainder after truncating integer division
+rem :: BigInt -> BigInt -> BigInt
+rem = biMod

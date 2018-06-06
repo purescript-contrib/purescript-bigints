@@ -4,7 +4,7 @@ import Prelude hiding (not)
 
 import Data.Array (filter, range)
 import Data.Array.NonEmpty as NEA
-import Data.BigInt (BigInt, abs, and, digitsInBase, even, fromBase, fromInt, fromNumber, fromString, not, odd, or, pow, prime, shl, shr, toBase, toBase', toNonEmptyString, toNumber, toString, xor)
+import Data.BigInt (BigInt, abs, and, digitsInBase, even, fromBase, fromInt, fromNumber, fromString, not, odd, or, pow, prime, shl, shr, toBase, toBase', toNonEmptyString, toNumber, toString, xor, quot, rem)
 import Data.Foldable (fold)
 import Data.Int as Int
 import Data.Maybe (Maybe(..), fromMaybe)
@@ -118,6 +118,8 @@ main = do
   testBinary (/) (/)
   testBinary mod mod
   testBinary div div
+  testBinary quot Int.quot
+  testBinary rem Int.rem
 
   -- To test the multiplication, we need to make sure that Int does not overflow
   quickCheck (\x y -> fromSmallInt x * fromSmallInt y == fromInt (runSmallInt x * runSmallInt y))
