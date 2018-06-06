@@ -181,6 +181,9 @@ foreign import biMod :: BigInt -> BigInt -> BigInt
 instance commutativeRingBigInt :: CommutativeRing BigInt
 
 instance euclideanRingBigInt :: EuclideanRing BigInt where
-  div = biDiv
-  mod = biMod
+  div x y = (x - x `mod` y) `biDiv` y
+
+  mod x y = ((x `biMod` yy) + yy) `biMod` yy
+    where yy = abs y
+
   degree = floor <<< toNumber <<< abs
