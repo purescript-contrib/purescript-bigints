@@ -2,7 +2,7 @@
 
 var bigInt = require("big-integer");
 
-exports["fromBase'"] = function(just) {
+exports.fromBaseImpl = function(just) {
   return function(nothing) {
     return function(b) {
       return function(s) {
@@ -22,7 +22,7 @@ function truncate(n) {
   return Math.ceil(n);
 }
 
-exports["fromNumber'"] = function(just) {
+exports.fromNumberImpl = function(just) {
   return function(nothing) {
       return function(n) {
         try {

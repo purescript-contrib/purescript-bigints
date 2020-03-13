@@ -45,7 +45,7 @@ type BaseDigits =
   }
 
 -- | FFI wrapper to parse a String in a given base representation into a BigInt.
-foreign import fromBase'
+foreign import fromBaseImpl
   :: forall a
    . (a -> Maybe a)
   -> Maybe a
@@ -57,7 +57,7 @@ foreign import fromBase'
 foreign import fromInt :: Int -> BigInt
 
 -- | FFI wrapper to parse a Number into a BigInt.
-foreign import fromNumber'
+foreign import fromNumberImpl
   :: forall a
    . (a -> Maybe a)
   -> Maybe a
@@ -66,7 +66,7 @@ foreign import fromNumber'
 
 -- | Convert a Number to a BigInt. The fractional part is truncated.
 fromNumber :: Number -> Maybe BigInt
-fromNumber = fromNumber' Just Nothing
+fromNumber = fromNumberImpl Just Nothing
 
 -- | Converts a BigInt to a Number. Loses precision for numbers which are too
 -- | large.
@@ -127,7 +127,7 @@ fromString = fromBase 10
 -- | fromBase 16 "ff" == fromString "255"
 -- | ```
 fromBase :: Int -> String -> Maybe BigInt
-fromBase = fromBase' Just Nothing
+fromBase = fromBaseImpl Just Nothing
 
 foreign import biEquals :: BigInt -> BigInt -> Boolean
 
