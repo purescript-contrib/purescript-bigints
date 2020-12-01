@@ -4,7 +4,7 @@ import Prelude hiding (not)
 
 import Data.Array (filter, range)
 import Data.Array.NonEmpty as NEA
-import Data.BigInt (BigInt, abs, and, digitsInBase, even, fromBase, fromInt, fromNumber, fromString, not, odd, or, pow, prime, shl, shr, toBase, toBase', toNonEmptyString, toNumber, toString, xor, quot, rem)
+import Data.BigInt (BigInt, abs, and, digitsInBase, even, fromBase, fromInt, fromNumber, fromString, not, odd, or, pow, prime, shl, shr, toBase, toBase', toNonEmptyString, toNumber, toString, xor, quot, rem, toInt)
 import Data.Foldable (fold)
 import Data.Int as Int
 import Data.Maybe (Maybe(..), fromMaybe)
@@ -167,3 +167,20 @@ main = do
   assert $ fromNumber infinity == Nothing
   assert $ fromNumber (-infinity) == Nothing
   assert $ fromNumber nan == Nothing
+
+  log "Converting BigInt to Int"
+  assert $ (fromString "0" >>= toInt) == Just 0
+  assert $ (fromString "2137" >>= toInt) == Just 2137
+  assert $ (fromString "-2137" >>= toInt) == Just (-2137)
+  assert $ (fromString "2147483647" >>= toInt) == Just 2147483647
+  assert $ (fromString "2147483648" >>= toInt) == Nothing
+  assert $ (fromString "-2147483648" >>= toInt) == Just (-2147483648)
+  assert $ (fromString "-2147483649" >>= toInt) == Nothing
+  assert $ (fromString "921231231322337203685124775809" >>= toInt) == Nothing
+  assert $ (fromString "-922337203612312312312854775809" >>= toInt) == Nothing
+  quickCheck (\a b c ->
+               let x = add (fromInt a) (add (fromInt b) (fromInt c))
+               in case toInt x of
+                 Nothing -> x < fromInt (-2147483648) || x > fromInt 2147483647
+                 Just i -> fromInt i == x
+             )
