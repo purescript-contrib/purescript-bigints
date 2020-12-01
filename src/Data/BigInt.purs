@@ -24,6 +24,7 @@ module Data.BigInt
   , shr
   , quot
   , rem
+  , toInt
   , toNumber
   ) where
 
@@ -31,6 +32,7 @@ import Prelude
 
 import Data.Array.NonEmpty (NonEmptyArray)
 import Data.Int (floor)
+import Data.Int as Int
 import Data.Maybe (Maybe(..), fromJust)
 import Data.String.NonEmpty (NonEmptyString)
 import Data.String.NonEmpty as NES
@@ -55,6 +57,9 @@ foreign import fromBaseImpl
 
 -- | Convert an integer to a BigInt.
 foreign import fromInt :: Int -> BigInt
+
+toInt :: BigInt -> Maybe Int
+toInt = toNumber >>> Int.fromNumber
 
 -- | FFI wrapper to parse a Number into a BigInt.
 foreign import fromNumberImpl
