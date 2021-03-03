@@ -3,17 +3,17 @@ module Test.Main where
 import Prelude hiding (not)
 
 import Data.Array (filter, range)
+import Data.Array.NonEmpty (cons')
 import Data.Array.NonEmpty as NEA
 import Data.BigInt (BigInt, abs, and, digitsInBase, even, fromBase, fromInt, fromNumber, fromString, not, odd, or, pow, prime, shl, shr, toBase, toBase', toNonEmptyString, toNumber, toString, xor, quot, rem, toInt)
 import Data.Foldable (fold)
 import Data.Int as Int
 import Data.Maybe (Maybe(..), fromMaybe)
-import Data.NonEmpty ((:|))
+import Data.Number (infinity, nan)
 import Data.String.NonEmpty (unsafeFromString)
 import Data.String.NonEmpty as NES
 import Effect (Effect)
 import Effect.Console (log)
-import Global (infinity, nan)
 import Partial.Unsafe (unsafePartial)
 import Test.Assert (assert)
 import Test.QuickCheck (quickCheck)
@@ -43,7 +43,7 @@ derive newtype instance euclideanRingTestBigInt :: EuclideanRing TestBigInt
 instance arbitraryBigInt :: Arbitrary TestBigInt where
   arbitrary = do
     n <- (fromMaybe zero <<< fromString) <$> digitString
-    op <- elements (identity :| [negate])
+    op <- elements (cons' identity [negate])
     pure (TestBigInt (op n))
     where digits :: Gen Int
           digits = chooseInt 0 9
