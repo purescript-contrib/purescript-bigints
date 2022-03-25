@@ -4,3 +4,4 @@ output
 .psci*
 .pulp-cache
 .psc-ide-port
+/.spago/

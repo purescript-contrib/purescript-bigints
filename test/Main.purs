@@ -105,7 +105,7 @@ main = do
   assert $ fromNumber 3.4 == Just three
   assert $ fromNumber (-3.9) == Just (-three)
   assert $ fromNumber 1.0e7 == Just (fromInt 10000000)
-  assert $ fromNumber 1.0e47 == fromString "1e47"
+  assert $ fromNumber 1.0e47 == fromString "100000000000000004384584304507619735463404765184"
   quickCheck (\x -> Just (fromInt x) == fromNumber (Int.toNumber x))
 
   log "Conversions between String, Int and BigInt should not loose precision"
