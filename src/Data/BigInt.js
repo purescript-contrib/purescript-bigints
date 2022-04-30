@@ -2,6 +2,10 @@
 
 import bigInt from "big-integer";
 
+export function fromTypeLevelInt(str) {
+  return bigInt(str, 10);
+}
+
 export function fromBaseImpl(just) {
   return function(nothing) {
     return function(b) {

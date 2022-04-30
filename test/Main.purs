@@ -5,7 +5,7 @@ import Prelude hiding (not)
 import Data.Array (filter, range)
 import Data.Array.NonEmpty (cons')
 import Data.Array.NonEmpty as NEA
-import Data.BigInt (BigInt, abs, and, digitsInBase, even, fromBase, fromInt, fromNumber, fromString, not, odd, or, pow, prime, shl, shr, toBase, toBase', toNonEmptyString, toNumber, toString, xor, quot, rem, toInt)
+import Data.BigInt (BigInt, abs, and, digitsInBase, even, fromBase, fromInt, fromNumber, fromString, fromTLInt, not, odd, or, pow, prime, shl, shr, toBase, toBase', toNonEmptyString, toNumber, toString, xor, quot, rem, toInt)
 import Data.Foldable (fold)
 import Data.Int as Int
 import Data.Maybe (Maybe(..), fromMaybe)
@@ -184,3 +184,7 @@ main = do
                  Nothing -> x < fromInt (-2147483648) || x > fromInt 2147483647
                  Just i -> fromInt i == x
              )
+
+  log "Type Level Int creation"
+  assert $ toString (fromTLInt (Proxy :: Proxy 921231231322337203685124775809)) == "921231231322337203685124775809"
+  assert $ toString (fromTLInt (Proxy :: Proxy (-921231231322337203685124775809))) == "-921231231322337203685124775809"

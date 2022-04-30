@@ -6,6 +6,7 @@ module Data.BigInt
   , fromBase
   , fromInt
   , fromNumber
+  , fromTLInt
   , toString
   , toNonEmptyString
   , toBase
@@ -34,9 +35,12 @@ import Data.Array.NonEmpty (NonEmptyArray)
 import Data.Int (floor)
 import Data.Int as Int
 import Data.Maybe (Maybe(..), fromJust)
+import Data.Reflectable (class Reflectable, reflectType)
 import Data.String.NonEmpty (NonEmptyString)
 import Data.String.NonEmpty as NES
 import Partial.Unsafe (unsafePartial)
+import Prim.Int (class ToString)
+import Type.Proxy (Proxy(..))
 
 -- | An arbitrary length integer.
 foreign import data BigInt :: Type
@@ -110,6 +114,18 @@ foreign import shl :: BigInt -> Number -> BigInt
 
 -- | Shift the bits right and maintain pos/neg.
 foreign import shr :: BigInt -> Number -> BigInt
+
+-- Note: this function should not be exported!
+-- It's only safe if used with type-level integers.
+foreign import fromTypeLevelInt :: String -> BigInt
+
+-- | Converts a type-level integer into a `BigInt`:
+-- | ```
+-- | import Type.Proxy (Proxy(..))
+-- | foo = fromTLInt (Proxy :: Proxy 857981209301293808359384092830482)
+-- | ```
+fromTLInt :: forall i sym. ToString i sym => Reflectable sym String => Proxy i -> BigInt
+fromTLInt _ = fromTypeLevelInt (reflectType (Proxy :: Proxy sym))
 
 -- | Parse a string into a `BigInt`, assuming a decimal representation. Returns
 -- | `Nothing` if the parse fails.
