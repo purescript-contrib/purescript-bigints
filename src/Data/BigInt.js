@@ -1,8 +1,12 @@
 // module Data.BigInt
 
-var bigInt = require("big-integer");
+import bigInt from "big-integer";
 
-exports.fromBaseImpl = function(just) {
+export function fromTypeLevelInt(str) {
+  return bigInt(str, 10);
+}
+
+export function fromBaseImpl(just) {
   return function(nothing) {
     return function(b) {
       return function(s) {
@@ -15,14 +19,14 @@ exports.fromBaseImpl = function(just) {
       };
     };
   };
-};
+}
 
 function truncate(n) {
   if (n > 0) return Math.floor(n);
   return Math.ceil(n);
 }
 
-exports.fromNumberImpl = function(just) {
+export function fromNumberImpl(just) {
   return function(nothing) {
       return function(n) {
         try {
@@ -33,122 +37,122 @@ exports.fromNumberImpl = function(just) {
         }
       };
   };
-};
+}
 
-exports.fromInt = function(n) {
+export function fromInt(n) {
   return bigInt(n);
-};
+}
 
-exports.toBase = function(base) {
+export function toBase(base) {
   return function (x) {
     return x.toString(base);
   };
-};
+}
 
-exports.toNumber = function(x) {
+export function toNumber(x) {
   return x.toJSNumber();
-};
+}
 
-exports.biAdd = function(x) {
+export function biAdd(x) {
   return function(y) {
     return x.add(y);
   };
-};
+}
 
-exports.biMul = function(x) {
+export function biMul(x) {
   return function(y) {
     return x.multiply(y);
   };
-};
+}
 
-exports.biSub = function(x) {
+export function biSub(x) {
   return function(y) {
     return x.minus(y);
   };
-};
+}
 
-exports.biMod = function(x) {
+export function biMod(x) {
   return function(y) {
     return x.mod(y);
   };
-};
+}
 
-exports.biDiv = function(x) {
+export function biDiv(x) {
   return function(y) {
     return x.divide(y);
   };
-};
+}
 
-exports.biEquals = function(x) {
+export function biEquals(x) {
   return function(y) {
     return x.equals(y);
   };
-};
+}
 
-exports.biCompare = function(x) {
+export function biCompare(x) {
   return function(y) {
     return x.compare(y);
   };
-};
+}
 
-exports.abs = function(x) {
+export function abs(x) {
   return x.abs();
-};
+}
 
-exports.even = function(x) {
+export function even(x) {
   return x.isEven();
-};
+}
 
-exports.odd = function(x) {
+export function odd(x) {
   return x.isOdd();
-};
+}
 
-exports.prime = function(x) {
+export function prime(x) {
   return x.isPrime();
-};
+}
 
-exports.pow = function(x) {
+export function pow(x) {
   return function(y) {
     return x.pow(y);
   };
-};
+}
 
-exports.not = function(x) {
+export function not(x) {
   return x.not();
-  };
+  }
 
-exports.or = function(x) {
+export function or(x) {
   return function(y) {
     return x.or(y);
   };
-};
+}
 
-exports.xor = function(x) {
+export function xor(x) {
   return function(y) {
     return x.xor(y);
   };
-};
+}
 
-exports.and = function(x) {
+export function and(x) {
   return function(y) {
     return x.and(y);
   };
-};
+}
 
-exports.shl = function(x) {
+export function shl(x) {
   return function(n) {
     return x.shiftLeft(n);
   };
-};
+}
 
-exports.shr = function(x) {
+export function shr(x) {
   return function(n) {
     return x.shiftRight(n);
   };
-};
+}
 
-exports.digitsInBase = function(radix) {
+export function digitsInBase(radix) {
   return function(x) {
     return x.toArray(radix);
   };
-};
+}

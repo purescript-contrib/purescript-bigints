@@ -20,17 +20,16 @@
     "package.json"
   ],
   "dependencies": {
-    "purescript-maybe": "^5.0.0",
-    "purescript-integers": "^5.0.0",
-    "purescript-strings": "^5.0.0"
+    "purescript-maybe": "^6.0.0",
+    "purescript-integers": "^6.0.0",
+    "purescript-strings": "^6.0.0"
   },
   "devDependencies": {
-    "purescript-integers": "^5.0.0",
-    "purescript-console": "^5.0.0",
-    "purescript-assert": "^5.0.0",
-    "purescript-quickcheck": "^7.0.0",
-    "purescript-quickcheck-laws": "^6.0.0",
-    "purescript-psci-support": "^5.0.0",
-    "purescript-effect": "^3.0.0"
+    "purescript-console": "^6.0.0",
+    "purescript-assert": "^6.0.0",
+    "purescript-quickcheck": "^8.0.0",
+    "purescript-quickcheck-laws": "^7.0.0",
+    "purescript-psci-support": "^6.0.0",
+    "purescript-effect": "^4.0.0"
   }
 }

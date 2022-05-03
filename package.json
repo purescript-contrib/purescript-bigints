@@ -1,17 +1,18 @@
 {
   "private": true,
   "scripts": {
-    "clean": "rimraf output && rimraf .pulp-cache",
-    "build": "pulp build -- --censor-lib --strict",
-    "test": "pulp test"
+    "clean": "rimraf output",
+    "build": "spago build",
+    "test": "spago test"
   },
   "dependencies": {
-    "big-integer": "^1.6.27"
+    "big-integer": "^1.6.51"
   },
   "devDependencies": {
     "bower": "^1.8.12",
-    "pulp": "^15.0.0",
+    "pulp": "^16.0.0",
     "purescript-psa": "^0.8.2",
     "rimraf": "^3.0.2"
-  }
+  },
+  "type": "module"
 }
