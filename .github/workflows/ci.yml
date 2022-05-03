@@ -18,14 +18,20 @@ jobs:
           node-version: "14"
 
       - name: Install dependencies
+        run: npm install
+
+      - name: Build source (spago)
+        run: spago build
+      
+      - name: Run tests (spago)
+        run: spago test
+      
+      - name: Build source (pulp)
         run: |
-          npm install
           npx bower install --production
+          npx pulp build
 
-      - name: Build source
-        run: npm run-script build
-
-      - name: Run tests
+      - name: Run tests (pulp)
         run: |
           npx bower install
-          npm run-script test --if-present
+          npx pulp test
