@@ -8,7 +8,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/sharkdp/purescript-bigints.git"
+    "url": "https://github.com/sharkdp/purescript-bigints.git"
   },
   "ignore": [
     "**/.*",
