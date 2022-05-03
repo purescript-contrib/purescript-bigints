@@ -166,7 +166,7 @@ toBase' :: Int -> BigInt -> NonEmptyString
 toBase' i bi = unsafePartial fromJust $ NES.fromString $ toBase i bi
 
 instance showBigInt :: Show BigInt where
-  show x = "fromString \"" <> toString x <> "\""
+  show x = "(fromString \"" <> toString x <> "\")"
 
 foreign import biAdd :: BigInt -> BigInt -> BigInt
 foreign import biMul :: BigInt -> BigInt -> BigInt
