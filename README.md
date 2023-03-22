@@ -4,6 +4,8 @@
 [![Build Status](https://github.com/sharkdp/purescript-bigints/workflows/CI/badge.svg?branch=master)](https://github.com/sharkdp/purescript-bigints/actions?query=workflow%3ACI+branch%3Amaster)
 [![Maintainer: gbagan](https://img.shields.io/badge/maintainer-gbagan-teal.svg)](https://github.com/gbagan)
 
+**Note**: This package is deprecated. You probably want to use [`purescript-js-bigints`](https://github.com/purescript-contrib/purescript-js-bigints) instead.
+
 A library for calculations with arbitrary length integers.
 This is a simple wrapper around [BigInteger.js](https://github.com/peterolson/BigInteger.js)
 by [Peter Olson](https://github.com/peterolson).
