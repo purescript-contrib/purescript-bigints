@@ -159,9 +159,9 @@ foreign import biCompare :: BigInt -> BigInt -> Int
 
 instance ordBigInt :: Ord BigInt where
   compare x y = case biCompare x y of
-                  1 -> GT
-                  0 -> EQ
-                  _ -> LT
+    1 -> GT
+    0 -> EQ
+    _ -> LT
 
 -- | A decimal representation of the `BigInt` as a `String`.
 toString :: BigInt -> String
@@ -188,10 +188,10 @@ foreign import biAdd :: BigInt -> BigInt -> BigInt
 foreign import biMul :: BigInt -> BigInt -> BigInt
 
 instance semiringBigInt :: Semiring BigInt where
-  add  = biAdd
+  add = biAdd
   zero = fromInt 0
-  mul  = biMul
-  one  = fromInt 1
+  mul = biMul
+  one = fromInt 1
 
 foreign import biSub :: BigInt -> BigInt -> BigInt
 
@@ -207,7 +207,8 @@ instance euclideanRingBigInt :: EuclideanRing BigInt where
   div x y = (x - x `mod` y) `biDiv` y
 
   mod x y = ((x `biMod` yy) + yy) `biMod` yy
-    where yy = abs y
+    where
+    yy = abs y
 
   degree = floor <<< toNumber <<< abs
 

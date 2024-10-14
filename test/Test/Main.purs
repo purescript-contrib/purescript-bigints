@@ -33,6 +33,7 @@ runSmallInt (SmallInt n) = n
 
 -- | Arbitrary instance for BigInt
 newtype TestBigInt = TestBigInt BigInt
+
 derive newtype instance eqTestBigInt :: Eq TestBigInt
 derive newtype instance ordTestBigInt :: Ord TestBigInt
 derive newtype instance semiringTestBigInt :: Semiring TestBigInt
@@ -43,21 +44,24 @@ derive newtype instance euclideanRingTestBigInt :: EuclideanRing TestBigInt
 instance arbitraryBigInt :: Arbitrary TestBigInt where
   arbitrary = do
     n <- (fromMaybe zero <<< fromString) <$> digitString
-    op <- elements (cons' identity [negate])
+    op <- elements (cons' identity [ negate ])
     pure (TestBigInt (op n))
-    where digits :: Gen Int
-          digits = chooseInt 0 9
-          digitString :: Gen String
-          digitString = (fold <<< map show) <$> (resize 50 $ arrayOf digits)
+    where
+    digits :: Gen Int
+    digits = chooseInt 0 9
+
+    digitString :: Gen String
+    digitString = (fold <<< map show) <$> (resize 50 $ arrayOf digits)
 
 -- | Convert SmallInt to BigInt
 fromSmallInt :: SmallInt -> BigInt
 fromSmallInt = fromInt <<< runSmallInt
 
 -- | Test if a binary relation holds before and after converting to BigInt.
-testBinary :: (BigInt -> BigInt -> BigInt)
-           -> (Int -> Int -> Int)
-           -> Effect Unit
+testBinary
+  :: (BigInt -> BigInt -> BigInt)
+  -> (Int -> Int -> Int)
+  -> Effect Unit
 testBinary f g = quickCheck (\x y -> (fromInt x) `f` (fromInt y) == fromInt (x `g` y))
 
 main :: Effect Unit
@@ -89,16 +93,18 @@ main = do
   assert $ toString (fromInt 12345) == "12345"
 
   log "Converting bigints to arrays with a different base"
-  assert $ NEA.toArray (digitsInBase 2 four).value == [1, 0, 0]
-  assert $ (NEA.toArray <<< _.value <<< digitsInBase 16 <$>
-           fromString "255") == Just [15, 15]
+  assert $ NEA.toArray (digitsInBase 2 four).value == [ 1, 0, 0 ]
+  assert $
+    ( NEA.toArray <<< _.value <<< digitsInBase 16 <$>
+        fromString "255"
+    ) == Just [ 15, 15 ]
   assert $ NEA.toArray (digitsInBase 10 $ fromInt 12345).value
-           == [1, 2, 3, 4, 5]
+    == [ 1, 2, 3, 4, 5 ]
 
   assert $ toBase' 2 four == unsafePartial unsafeFromString "100"
   assert $ (toBase' 16 <$> fromString "255") == NES.fromString "ff"
   assert $ toNonEmptyString (fromInt 12345)
-           == unsafePartial unsafeFromString "12345"
+    == unsafePartial unsafeFromString "12345"
 
   log "Converting from Number to BigInt"
   assert $ fromNumber 0.0 == Just zero
@@ -140,7 +146,7 @@ main = do
   assert $ zero `pow` zero == one
 
   log "Prime numbers"
-  assert $ filter (prime <<< fromInt) (range 2 20) == [2, 3, 5, 7, 11, 13, 17, 19]
+  assert $ filter (prime <<< fromInt) (range 2 20) == [ 2, 3, 5, 7, 11, 13, 17, 19 ]
 
   log "Absolute value"
   quickCheck $ \(TestBigInt x) -> abs x == if x > zero then x else (-x)
@@ -178,12 +184,15 @@ main = do
   assert $ (fromString "-2147483649" >>= toInt) == Nothing
   assert $ (fromString "921231231322337203685124775809" >>= toInt) == Nothing
   assert $ (fromString "-922337203612312312312854775809" >>= toInt) == Nothing
-  quickCheck (\a b c ->
-               let x = add (fromInt a) (add (fromInt b) (fromInt c))
-               in case toInt x of
-                 Nothing -> x < fromInt (-2147483648) || x > fromInt 2147483647
-                 Just i -> fromInt i == x
-             )
+  quickCheck
+    ( \a b c ->
+        let
+          x = add (fromInt a) (add (fromInt b) (fromInt c))
+        in
+          case toInt x of
+            Nothing -> x < fromInt (-2147483648) || x > fromInt 2147483647
+            Just i -> fromInt i == x
+    )
 
   log "Type Level Int creation"
   assert $ toString (fromTLInt (Proxy :: Proxy 921231231322337203685124775809)) == "921231231322337203685124775809"

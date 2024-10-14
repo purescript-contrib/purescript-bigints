@@ -1,0 +1,27 @@
+package:
+  name: bigints
+  description: Arbitrary length integers
+  publish:
+    license: MIT
+    version: 8.0.0
+    location:
+      githubOwner: sharkdp
+      githubRepo: purescript-bigints
+  dependencies:
+    - arrays: ">=7.3.0 <8.0.0"
+    - integers: ">=6.0.0 <7.0.0"
+    - maybe: ">=6.0.0 <7.0.0"
+    - partial: ">=4.0.0 <5.0.0"
+    - prelude: ">=6.0.1 <7.0.0"
+    - strings: ">=6.0.1 <7.0.0"
+  test:
+    main: Test.Main
+    dependencies:
+      - assert
+      - console
+      - effect
+      - foldable-traversable
+      - numbers
+      - quickcheck
+      - quickcheck-laws
+workspace: {}
