@@ -9,10 +9,7 @@
     "big-integer": "^1.6.51"
   },
   "devDependencies": {
-    "bower": "^1.8.12",
-    "pulp": "^16.0.0",
-    "purescript-psa": "^0.8.2",
-    "rimraf": "^3.0.2"
+    "rimraf": "^6.1.3"
   },
   "type": "module"
 }

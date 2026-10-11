@@ -9,29 +9,21 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
 
       - uses: purescript-contrib/setup-purescript@main
-
-      - uses: actions/setup-node@v2
         with:
-          node-version: "14"
+          spago: latest
 
       - name: Install dependencies
         run: npm install
 
       - name: Build source (spago)
         run: spago build
-      
+
       - name: Run tests (spago)
         run: spago test
-      
-      - name: Build source (pulp)
-        run: |
-          npx bower install --production
-          npx pulp build
-
-      - name: Run tests (pulp)
-        run: |
-          npx bower install
-          npx pulp test
