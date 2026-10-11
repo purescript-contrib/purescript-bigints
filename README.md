@@ -1,6 +1,6 @@
 # purescript-bigints
 
-[![Latest release](http://img.shields.io/bower/v/purescript-bigints.svg)](https://github.com/sharkdp/purescript-bigints/releases)
+[![Latest release](https://img.shields.io/github/v/release/purescript-contrib/purescript-bigints)](https://github.com/purescript-contrib/purescript-bigints/releases)
 [![Build Status](https://github.com/sharkdp/purescript-bigints/workflows/CI/badge.svg?branch=master)](https://github.com/sharkdp/purescript-bigints/actions?query=workflow%3ACI+branch%3Amaster)
 [![Maintainer: gbagan](https://img.shields.io/badge/maintainer-gbagan-teal.svg)](https://github.com/gbagan)
 
@@ -33,16 +33,17 @@ true
 ```
 
 ## Installation and usage
-You can install this package via Bower. You will also need [BigInteger.js](https://github.com/peterolson/BigInteger.js), which can be installed via `npm`:
+You can install this package via Spago. You will also need [BigInteger.js](https://github.com/peterolson/BigInteger.js), which can be installed via `npm`:
 ```
-bower install purescript-bigints
+spago install bigints
 npm install big-integer
 ```
 For the browser, remember to bundle `BigInteger.min.js` with your code.
 
 ## Development
 ```
-bower install
 npm install
+spago build
+spago test
 ```
-Then, use `pulp` to build, run tests and generate the documentation.
+Use `spago docs` to generate the documentation.
